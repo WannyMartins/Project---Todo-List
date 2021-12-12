@@ -1,4 +1,3 @@
-//window.onload= li.style.backgrounColor = 'white'
 
 var botao = document.getElementById('criar-tarefa');
 var listaTarefas = document.getElementById('lista-tarefas')
@@ -37,15 +36,16 @@ listaTarefas.addEventListener('click', function(event){
         event.target.classList.add('selected');
     }
 })
-        
-/*      
-    function colorBackground() {
-            listaLi[i].addEventListener("click", mudaCor);
-        
-        
-            item.target.style.backgroundColor = 'rgb(128,128,128)'    
+
+listaTarefas.addEventListener('dblclick', function(event){  //referencia ao dblclick >>>>https://developer.mozilla.org/en-US/docs/Web/API/Element/dblclick_event
+    let selecionaItem = document.querySelector('.completed');
+
+        if(selecionaItem!=true){
+            selecionaItem = event.target;
+            event.target.classList.toggle('completed');//toggle tirei referencia no mdn >>>> https://developer.mozilla.org/en-US/search?q=toggle
         }
-      
- */
+    
+})
+        
 
 
