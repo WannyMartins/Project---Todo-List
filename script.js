@@ -59,3 +59,16 @@ botaoApagaTudo.addEventListener('click', function (event){
     
 })
 
+let botaoApagaCompleted = document.querySelector("#remover-finalizados");
+
+
+botaoApagaCompleted.addEventListener('click', function (event){
+
+    while(document.querySelector('.completed')){
+        listaTarefas.removeChild(listaTarefas.querySelector('.completed'))
+
+    }
+    
+})
+
+
