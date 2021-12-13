@@ -46,6 +46,16 @@ listaTarefas.addEventListener('dblclick', function(event){  //referencia ao dblc
         }
     
 })
-        
 
+let botaoApagaTudo = document.querySelector("#apaga-tudo");
+
+
+botaoApagaTudo.addEventListener('click', function (event){
+
+    while(listaTarefas.firstChild){
+        listaTarefas.removeChild(listaTarefas.firstChild)
+    }//https://developer.mozilla.org/pt-BR/docs/Web/API/Node/removeChild
+    //while funciona como for, no caso enquanto lista de tarefas tiver primeiro filho ele vai executar a remoção deste primeiro filho. não existindo mais o primeiro o segundo passa a ser primeiro e ai é removido tambem.
+    
+})
 
