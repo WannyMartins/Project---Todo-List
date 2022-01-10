@@ -2,27 +2,34 @@
 var botao = document.getElementById('criar-tarefa');
 var listaTarefas = document.getElementById('lista-tarefas')
 
+const tarefaI= JSON.parse(localStorage.getItem('tarefas')) ||
+[];
+
+
 function criarTarefa() {
     botao.addEventListener('click', itemLi);
   
     function itemLi() {
-      var li = document.createElement('li');
+      const li = document.createElement('li');
       var input = document.getElementById('texto-tarefa').value;//aprendi sobre input.value para armazenar o valor digitado no input....neste video ...https://www.youtube.com/watch?v=bC5Mp37L5hA&ab_channel=MatheusBattisti-HoradeCodar
 
       li.innerText = input;
       li.className = 'item-list'
+      tarefaI.push({
+        listaT : input
+       
+ 
+     } )
+ 
+   
      
       document.getElementById('lista-tarefas').appendChild(li);
-      document.getElementById('texto-tarefa').value = '';//aqui indforma que input volta a ficar vazio após criar a lista com o valor do input.
+
+       document.getElementById('texto-tarefa').value = '';//aqui indforma que input volta a ficar vazio após criar a lista com o valor do input.
 
     } 
 }
-  criarTarefa();
-
-
- 
-    ///ideias tiradas de uma conversa com Lalá na Metala
-
+criarTarefa();
 
 listaTarefas.addEventListener('click', function(event){
     let listaItemSelecionado = document.querySelectorAll('.selected');
@@ -56,19 +63,27 @@ botaoApagaTudo.addEventListener('click', function (event){
         listaTarefas.removeChild(listaTarefas.firstChild)
     }//https://developer.mozilla.org/pt-BR/docs/Web/API/Node/removeChild
     //while funciona como for, no caso enquanto lista de tarefas tiver primeiro filho ele vai executar a remoção deste primeiro filho. não existindo mais o primeiro o segundo passa a ser primeiro e ai é removido tambem.
-    
+    tarefaI.splice(0,tarefaI.length )
+    localStorage.clear('tarefas');
 })
 
-let botaoApagaCompleted = document.querySelector("#remover-finalizados");
+let botaoApagaCompleted = document.querySelector('#remover-finalizados');
 
 
 botaoApagaCompleted.addEventListener('click', function (event){
 
     while(document.querySelector('.completed')){
-        listaTarefas.removeChild(listaTarefas.querySelector('.completed'))
+        let remove = listaTarefas.removeChild(listaTarefas.querySelector('.completed'))
 
     }
-    
-})
 
+})
+const botaoSalvarLista=document.getElementById('salvar-tarefas');
+botaoSalvarLista.addEventListener('click', salvar)
+
+// tive ajuda do colega Leo Araujo para desenrolar o localStorage
+function salvar(){
+localStorage.setItem('tarefas', JSON.stringify(tarefaI))
+}
+   
 
