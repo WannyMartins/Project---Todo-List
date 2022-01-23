@@ -3,13 +3,12 @@
 const botao = document.getElementById('criar-tarefa');
 const listaTarefas = document.getElementById('lista-tarefas');
 const tarefaI = [];
-let selecionaItem = document.querySelector('.completed');
+let completedItem = document.querySelector('.completed');
 const botaoApagaTudo = document.querySelector('#apaga-tudo');
 const botaoApagaCompleted = document.querySelector('#remover-finalizados');
 const botaoSalvarLista = document.getElementById('salvar-tarefas');
 const tarefaSalva = JSON.parse(localStorage.getItem('tarefas'));
-const tarefasSalvas = [];
-
+// const tarefasSalvas = [];
 
 // functions
 const itemLi = () => {
@@ -41,9 +40,9 @@ const selecionado = (event) => {
 };
 
 const completed = (event) => {
-  if (selecionaItem !== true) {
-    selecionaItem = event.target;
-    event.target.classList.toggle('completed'); //toggle tirei referencia no mdn >>>> https://developer.mozilla.org/en-US/search?q=toggle
+  if (completedItem !== true) {
+    completedItem = event.target;
+    event.target.classList.toggle('completed'); // toggle tirei referencia no mdn >>>> https://developer.mozilla.org/en-US/search?q=toggle
   }
 };
 const apagarLista = () => {
@@ -55,8 +54,8 @@ const apagarLista = () => {
   localStorage.clear('tarefas');
 };
 const removerCompleto = () => {
-  while (selecionaItem) {
-    listaTarefas.removeChild(selecionaItem);
+  while (completedItem) {
+    listaTarefas.removeChild(completedItem);
   }
 };
 // tive ajuda do colega Leo Araujo para desenrolar o localStorage
@@ -66,7 +65,7 @@ const recuperarLista = () => {
     const li = document.createElement('li');
     li.innerText = tarefaSalva[index].listaT;
     li.className = 'item-list';
-    tarefasSalvas.push(tarefaSalva[index]);
+   // tarefasSalvas.push(tarefaSalva[index]);
     listaTarefas.appendChild(li);
   }
 };
