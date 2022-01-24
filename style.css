@@ -1,9 +1,11 @@
-body{
-    background-color: whitesmoke;
+body {
+  background-color: whitesmoke;
 }
-.selected{
-    background-color: rgb(128,128,128);
+
+.selected {
+  background-color: gray;
 }
-.completed{
-    text-decoration: line-through;
+
+.completed {
+  text-decoration: line-through;
 }

@@ -2,30 +2,31 @@
 
 const botao = document.getElementById('criar-tarefa');
 const listaTarefas = document.getElementById('lista-tarefas');
+const input = document.getElementById('texto-tarefa');
 const tarefaI = [];
-let completedItem = document.querySelector('.completed');
+let completedItem = document.getElementsByClassName('completed');
 const botaoApagaTudo = document.querySelector('#apaga-tudo');
 const botaoApagaCompleted = document.querySelector('#remover-finalizados');
 const botaoSalvarLista = document.getElementById('salvar-tarefas');
-const tarefaSalva = JSON.parse(localStorage.getItem('tarefas'));
-// const tarefasSalvas = [];
 
 // functions
 const itemLi = () => {
   const li = document.createElement('li');
-  const input = document.getElementById('texto-tarefa').value; // aprendi sobre input.value para armazenar o valor digitado no input....neste video ...https://www.youtube.com/watch?v=bC5Mp37L5hA&ab_channel=MatheusBattisti-HoradeCodar
-
-  li.innerText = input;
+  // aprendi sobre input.value para armazenar o valor digitado no input....neste video ...https://www.youtube.com/watch?v=bC5Mp37L5hA&ab_channel=MatheusBattisti-HoradeCodar
+  li.innerText = input.value;
   li.className = 'item-list';
   tarefaI.push({
     listaT: input,
+    completo: false,
   });
-
   listaTarefas.appendChild(li);
-
   document.getElementById('texto-tarefa').value = ''; // aqui indforma que input volta a ficar vazio após criar a lista com o valor do input.
 };
-
+const itemLiEnter = (event) => {
+  if (event.key === 'Enter') {
+    itemLi();
+  }
+};
 const selecionado = (event) => {
   const listaItemSelecionado = document.querySelectorAll('.selected');
   let selecionaItem = document.querySelector('.selected');
@@ -43,8 +44,10 @@ const completed = (event) => {
   if (completedItem !== true) {
     completedItem = event.target;
     event.target.classList.toggle('completed'); // toggle tirei referencia no mdn >>>> https://developer.mozilla.org/en-US/search?q=toggle
+    tarefaI.completo = true;
   }
 };
+
 const apagarLista = () => {
   while (listaTarefas.firstChild) {
     listaTarefas.removeChild(listaTarefas.firstChild);
@@ -54,25 +57,35 @@ const apagarLista = () => {
   localStorage.clear('tarefas');
 };
 const removerCompleto = () => {
-  while (completedItem) {
-    listaTarefas.removeChild(completedItem);
+  const itensCompletos = document.querySelectorAll('.completed');
+  for (let index = 0; index < itensCompletos.length; index += 1) {
+    listaTarefas.removeChild(itensCompletos[index]);
   }
 };
+
 // tive ajuda do colega Leo Araujo para desenrolar o localStorage
-const salvar = () => localStorage.setItem('tarefas', JSON.stringify(tarefaI));
+const salvar = () => {
+  localStorage.clear();
+  const listaItens = listaTarefas.children;
+  for (let i = 0; i < listaItens.length; i += 1) {
+    localStorage.setItem(`${i + 1}`, `${listaItens[i].outerHTML}`);
+    // Raphael Martins no code reviw me ajudou a ver que localStorage setitem pode receber chave, valor como strings em templates literals. a propriedade do DOM outerHTML traz tudo o que o nó tem, como as classes dele e tudo mais...
+  }
+};
+
 const recuperarLista = () => {
-  for (let index = 0; index < tarefaSalva.length; index += 1) {
-    const li = document.createElement('li');
-    li.innerText = tarefaSalva[index].listaT;
-    li.className = 'item-list';
-   // tarefasSalvas.push(tarefaSalva[index]);
-    listaTarefas.appendChild(li);
+  for (let i = 0; i < localStorage.length; i += 1) {
+    const listaSalvaOuterHTML = localStorage.getItem(`${i + 1}`);
+    const criaListaSalva = document.createElement('li');
+    listaTarefas.appendChild(criaListaSalva);
+    criaListaSalva.outerHTML = listaSalvaOuterHTML;
   }
 };
 
 // Eventos
 
 botao.addEventListener('click', itemLi);
+input.addEventListener('keypress', itemLiEnter); // Raphael Martins me lembrou que addEvewnteListener pode receber mais keys alem do click...
 listaTarefas.addEventListener('click', selecionado);
 listaTarefas.addEventListener('dblclick', completed); // referencia ao dblclick >>>> https://developer.mozilla.org/en-US/docs/Web/API/Element/dblclick_event
 botaoApagaCompleted.addEventListener('click', removerCompleto);
