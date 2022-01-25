@@ -8,29 +8,36 @@ let completedItem = document.getElementsByClassName('completed');
 const botaoApagaTudo = document.querySelector('#apaga-tudo');
 const botaoApagaCompleted = document.querySelector('#remover-finalizados');
 const botaoSalvarLista = document.getElementById('salvar-tarefas');
+const botaoParaCima = document.getElementById('mover-cima');
+const botaoParaBaixo = document.getElementById('mover-baixo');
+const botaoRemoveSelecionado = document.getElementById('remover-selecionado');
 
 // functions
 const itemLi = () => {
   const li = document.createElement('li');
   // aprendi sobre input.value para armazenar o valor digitado no input....neste video ...https://www.youtube.com/watch?v=bC5Mp37L5hA&ab_channel=MatheusBattisti-HoradeCodar
-  li.innerText = input.value;
-  li.className = 'item-list';
-  tarefaI.push({
-    listaT: input,
-    completo: false,
-  });
-  listaTarefas.appendChild(li);
+  if (input.value !== '') {
+    li.innerText = input.value;
+    li.className = 'item-list';
+    tarefaI.push({
+      listaT: input,
+      completo: false,
+    });
+    listaTarefas.appendChild(li);
+  }
+
   document.getElementById('texto-tarefa').value = ''; // aqui indforma que input volta a ficar vazio após criar a lista com o valor do input.
 };
+
 const itemLiEnter = (event) => {
   if (event.key === 'Enter') {
     itemLi();
   }
 };
+
 const selecionado = (event) => {
   const listaItemSelecionado = document.querySelectorAll('.selected');
   let selecionaItem = document.querySelector('.selected');
-
   if (listaItemSelecionado.length > 0) {
     selecionaItem.classList.remove('selected');
     selecionaItem = event.target;
@@ -56,6 +63,7 @@ const apagarLista = () => {
   tarefaI.splice(0, tarefaI.length);
   localStorage.clear('tarefas');
 };
+
 const removerCompleto = () => {
   const itensCompletos = document.querySelectorAll('.completed');
   for (let index = 0; index < itensCompletos.length; index += 1) {
@@ -81,6 +89,25 @@ const recuperarLista = () => {
     criaListaSalva.outerHTML = listaSalvaOuterHTML;
   }
 };
+// tive ajuda do ncolega Joarez Ximenez para relembrar parentNode do DOM e a dica do insertBefore() o qual li a documentação e entendi >> https://developer.mozilla.org/pt-BR/docs/Web/API/Node/insertBefore
+const moverParaCima = () => {
+  const itemSelecionado = document.querySelector('.selected');
+  if (itemSelecionado !== itemSelecionado.parentNode.firstChild) {
+    listaTarefas.insertBefore(itemSelecionado, itemSelecionado.previousSibling);
+  }
+};
+
+const moverParaBaixo = () => {
+  const itemSelecionado = document.querySelector('.selected');
+  if (itemSelecionado !== itemSelecionado.parentNode.lastChild) {
+    listaTarefas.insertBefore(itemSelecionado, itemSelecionado.nextSibling.nextSibling);
+  }
+};
+
+const removerSelecionado = () => {
+  const liSelecionado = document.getElementsByClassName('.selected');
+  listaTarefas.remove(liSelecionado);
+};
 
 // Eventos
 
@@ -91,6 +118,9 @@ listaTarefas.addEventListener('dblclick', completed); // referencia ao dblclick 
 botaoApagaCompleted.addEventListener('click', removerCompleto);
 botaoApagaTudo.addEventListener('click', apagarLista);
 botaoSalvarLista.addEventListener('click', salvar);
+botaoParaCima.addEventListener('click', moverParaCima);
+botaoParaBaixo.addEventListener('click', moverParaBaixo);
+botaoRemoveSelecionado.addEventListener('click', removerSelecionado);
 
 window.onload = function atualizar() {
   if (localStorage.length > 0) {
