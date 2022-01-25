@@ -105,8 +105,10 @@ const moverParaBaixo = () => {
 };
 
 const removerSelecionado = () => {
-  const liSelecionado = document.getElementsByClassName('.selected');
-  listaTarefas.remove(liSelecionado);
+  const liSelecionado = document.querySelectorAll('.selected');
+  for (let index = 0; index < liSelecionado.length; index += 1) {
+    listaTarefas.removeChild(liSelecionado[index]);
+  }
 };
 
 // Eventos
