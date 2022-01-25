@@ -89,16 +89,22 @@ const recuperarLista = () => {
     criaListaSalva.outerHTML = listaSalvaOuterHTML;
   }
 };
-// tive ajuda do ncolega Joarez Ximenez para relembrar parentNode do DOM e a dica do insertBefore() o qual li a documentação e entendi >> https://developer.mozilla.org/pt-BR/docs/Web/API/Node/insertBefore
+// tive ajuda do colega Joarez Ximenez para relembrar parentNode do DOM e a dica do insertBefore() o qual li a documentação e entendi >> https://developer.mozilla.org/pt-BR/docs/Web/API/Node/insertBefore
 const moverParaCima = () => {
   const itemSelecionado = document.querySelector('.selected');
+  if (!itemSelecionado) {
+    return undefined;
+  }
   if (itemSelecionado !== itemSelecionado.parentNode.firstChild) {
-    listaTarefas.insertBefore(itemSelecionado, itemSelecionado.previousSibling);
+    return listaTarefas.insertBefore(itemSelecionado, itemSelecionado.previousSibling);
   }
 };
 
 const moverParaBaixo = () => {
   const itemSelecionado = document.querySelector('.selected');
+  if (!itemSelecionado) {
+    return undefined;
+  }
   if (itemSelecionado !== itemSelecionado.parentNode.lastChild) {
     listaTarefas.insertBefore(itemSelecionado, itemSelecionado.nextSibling.nextSibling);
   }
